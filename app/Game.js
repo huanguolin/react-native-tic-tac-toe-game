@@ -23,9 +23,11 @@ export default class Game extends Component {
         };
     }
 
-    play (i) {
+    _play (i) {
         const { xIsNext, squares, stepNumber } = this.state;
-        if (calculateWinner(squares) || stepNumber >= TOTAL_SQUARES) {
+        if (squares[i] || 
+            calculateWinner(squares) || 
+            stepNumber >= TOTAL_SQUARES) {
             return;
         }
 
@@ -38,7 +40,7 @@ export default class Game extends Component {
         });
     }
 
-    control () {
+    _control () {
         const { squares, stepNumber } = this.state;
         const reset = () => this.setState({
             squares: Array(TOTAL_SQUARES).fill(null),
@@ -67,7 +69,7 @@ export default class Game extends Component {
         let btnTitle = 'new game';
         let btnColor = 'green';
         if (winner) {
-            hint = 'Winner: ' + winner.who + '!';
+            hint = 'Winner: ' + winner.who;
         } else if (stepNumber >= TOTAL_SQUARES) {
             hint = 'No winner!';
         } else {
@@ -81,13 +83,13 @@ export default class Game extends Component {
                 <Text style={styles.hint}>{hint}</Text>    
                 <Board 
                     squares={squares} 
-                    onPress={(i) => this.play(i)}
+                    onPress={(i) => this._play(i)}
                     winLine={winner ? winner.line : []}/>
                 <View style={{ marginTop: 15 }}>
                     <Button 
                         title={btnTitle}
                         color={btnColor} 
-                        onPress={() => this.control()} 
+                        onPress={() => this._control()} 
                         disabled={stepNumber === 0}/>
                 </View>
             </View>
